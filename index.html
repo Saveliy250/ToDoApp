@@ -9,8 +9,8 @@
     <div id="app">
       <div class="container">
         <form id="form">
-          <input type="text" id="taskInput" placeholder="Add a new task" />
-          <button type="submit" class="button">
+          <input type="text" id="taskInput" placeholder="Add a new task" required />
+          <button type="submit" class="button" id="addTask">
             <img src="/favicon/Plus.svg" alt="Add a new task" />
           </button>
         </form>
@@ -18,31 +18,9 @@
         <div class="tasks">
           <p>Tasks to do</p>
           <ul id="tasksToDoList">
-            <li id="0" class="list-group-item">
-              <span class="task-title">To study React fundamentals</span>
-              <div class="task-item__buttons">
-                <button type="button" data-action="done" class="btn-action">
-                  <img src="public/favicon/Check.svg" alt="Done" width="22" height="22">
-                </button>
-                <button type="button" data-action="delete" class="btn-action">
-                  <img src="public/favicon/Trash.svg" alt="Done" width="22" height="22">
-                </button>
-              </div>
-            </li>
           </ul>
           <p>Done</p>
           <ul id="tasksDoneList">
-            <li id="1" class="list-group-item-done">
-              <span class="task-title">To study React fundamentals</span>
-              <div class="task-item__buttons">
-                <button type="button" data-action="done" class="btn-action">
-                  <img src="public/favicon/Check.svg" alt="Done" width="22" height="22">
-                </button>
-                <button type="button" data-action="delete" class="btn-action">
-                  <img src="public/favicon/Trash.svg" alt="Done" width="22" height="22">
-                </button>
-              </div>
-            </li>
 
           </ul>
         </div>
