@@ -1,25 +1,31 @@
 import "../scss/style.scss"
+import {TasksModel} from "./TasksModel.js";
+import {FetchWrapper} from "./shared/FetchWrapper.js";
 
 const taskInputElement = document.querySelector("#taskInput")
 const formElement = document.querySelector("#form")
 const tasksToDoListElement = document.querySelector("#tasksToDoList")
 const tasksDoneListElement = document.querySelector("#tasksDoneList")
+const containerElement = document.querySelector("#mainContainer")
 
-let tasks = []
-if (localStorage.getItem('tasks')) {
-    tasks = JSON.parse(localStorage.getItem('tasks'));
-}
+let {tasks, addTask, deleteTask, doneTask} = new TasksModel(JSON.parse(localStorage.getItem('tasks')))
+const fetchWrapper = new FetchWrapper('https://73a95a8fb71c882b.mokky.dev')
 
-tasks.forEach(task => {
+tasks.value.forEach(task => {
+    console.log(task.value)
     renderTask(task);
 })
 
-formElement.addEventListener("submit", addTask)
-document.addEventListener('click', deleteTask)
-document.addEventListener('click', doneTask)
-function addTask(e) {
-    e.preventDefault()
+tasks.subscribe(() => {
+    saveToLocalStorage()
+})
 
+formElement.addEventListener("submit", handleAddTask)
+containerElement.addEventListener('click', handleDeleteTask)
+containerElement.addEventListener('click', handleDoneTask)
+
+function handleAddTask(e) {
+    e.preventDefault()
     const taskTextInput = taskInputElement.value
 
     const newTask = {
@@ -27,50 +33,44 @@ function addTask(e) {
         text: taskTextInput,
         done: false
     }
-    tasks.push(newTask)
-    // postTask(newTask)
-
-    saveToLocalStorage()
+    addTask(newTask)
 
     renderTask(newTask)
-
     taskInputElement.value = ''
     taskInputElement.focus()
+
 }
 
-function deleteTask(e) {
+function handleDeleteTask(e) {
     if (e.target.dataset.action !== "delete") {
         return
     }
-    const parentElement = e.target.closest(".list-group-item")
-    const taskId = Number(parentElement.id)
 
-    tasks = tasks.filter(task => task.id !== taskId)
+    const taskItem = e.target.closest(".list-group-item")
+    const taskId = Number(taskItem.id)
 
-    //deleteFromServer()
-    saveToLocalStorage()
-    parentElement.remove()
+    deleteTask(taskId)
+
+    taskItem.remove()
 }
 
-function doneTask(e) {
+function handleDoneTask(e) {
     if (e.target.dataset.action !== "done") {
         return
     }
 
-    const parentElement = e.target.closest(".list-group-item")
-    const taskId = Number(parentElement.id)
-    const task = tasks.find(task => task.id === taskId)
-    console.log(task.done)
-    task.done = !task.done
-    saveToLocalStorage()
-    parentElement.remove()
-    renderTask(task)
+    const taskItem = e.target.closest(".list-group-item")
+    const taskId = Number(taskItem.id)
 
-    parentElement.classList.toggle('list-group-item-done')
+    const task = doneTask(taskId)
+    taskItem.remove()
+
+    taskItem.classList.toggle('list-group-item-done')
+    renderTask(task)
 }
 
 function saveToLocalStorage() {
-    localStorage.setItem("tasks", JSON.stringify(tasks))
+    localStorage.setItem("tasks", JSON.stringify(tasks.value))
 }
 
 function renderTask(task) {
@@ -79,10 +79,10 @@ function renderTask(task) {
               <span class="task-title">${task.text}</span>
               <div class="task-item__buttons">
                 <button type="button" data-action="done" class="btn-action">
-                  <img src="public/favicon/Check.svg" alt="Done" width="22" height="22">
+                  <img src="/favicon/Check.svg" alt="Done" width="22" height="22">
                 </button>
                 <button type="button" data-action="delete" class="btn-action">
-                  <img src="public/favicon/Trash.svg" alt="Done" width="22" height="22">
+                  <img src="/favicon/Trash.svg" alt="Done" width="22" height="22">
                 </button>
               </div>
             </li>`
