@@ -1,4 +1,4 @@
-import {Observable} from "./shared/Observable.js";
+import {Observable} from "../shared/Observable.js";
 
 export class TasksModel {
     constructor(initialValue) {
@@ -7,6 +7,9 @@ export class TasksModel {
 
     getTasks = () => {
       return this.tasks.value;
+    }
+    getTaskById = (id) => {
+        return this.tasks.value.find(task => task.id === id)
     }
     addTask = (newTask) => {
         this.tasks.value.push(newTask)
