@@ -5,6 +5,9 @@ export class FetchWrapper {
 
     async get(url) {
         const response = await fetch(`${this.baseUrl}${url}`)
+        if (!response.ok) {
+            throw new Error(response.statusText)
+        }
         return response.json()
     }
 
@@ -16,6 +19,9 @@ export class FetchWrapper {
                 'Content-Type': 'application/json'
             }
         })
+        if (!response.ok) {
+            throw new Error(response.statusText)
+        }
         return response.json()
     }
 
@@ -23,6 +29,9 @@ export class FetchWrapper {
         const response = await fetch(`${this.baseUrl}${url}`, {
             method: 'DELETE',
         })
+        if (!response.ok) {
+            throw new Error(response.statusText)
+        }
         return response.json()
     }
     async patch(url, body) {
@@ -33,6 +42,9 @@ export class FetchWrapper {
                 'Content-Type': 'application/json'
             }
         })
+        if (!response.ok) {
+            throw new Error(response.statusText)
+        }
         return response.json()
     }
 }

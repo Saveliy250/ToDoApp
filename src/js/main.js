@@ -10,16 +10,15 @@ const containerElement = document.querySelector("#mainContainer")
 
 const initialTasks = localStorage.getItem("tasks") ? JSON.parse(localStorage.getItem("tasks")) : []
 
-let {tasks, addTask, deleteTask, doneTask} = new TasksModel(initialTasks)
+let {tasks, addTask, deleteTask, doneTask, getTasks} = new TasksModel(initialTasks)
 const fetchWrapper = new FetchWrapper('https://73a95a8fb71c882b.mokky.dev')
 
-tasks.value.forEach(task => {
-    console.log(task.value)
+getTasks().forEach(task => {
     renderTask(task);
 })
 
-tasks.subscribe(() => {
-    saveToLocalStorage()
+tasks.subscribe((value) => {
+    saveToLocalStorage("tasks", value)
 })
 
 formElement.addEventListener("submit", handleAddTask)
@@ -71,8 +70,8 @@ function handleDoneTask(e) {
     renderTask(task)
 }
 
-function saveToLocalStorage() {
-    localStorage.setItem("tasks", JSON.stringify(tasks.value))
+function saveToLocalStorage(key, value) {
+    localStorage.setItem("tasks", JSON.stringify(value))
 }
 
 function renderTask(task) {

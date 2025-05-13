@@ -12,7 +12,7 @@ export class Observable {
         this.subscribers.delete(func)
     }
 
-    notify = (data) => {
+    notify = (data = this.value) => {
         this.subscribers.forEach(func => func(data))
     }
 }

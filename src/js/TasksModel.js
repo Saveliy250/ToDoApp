@@ -5,20 +5,23 @@ export class TasksModel {
         this.tasks = new Observable(initialValue);
     }
 
+    getTasks = () => {
+      return this.tasks.value;
+    }
     addTask = (newTask) => {
         this.tasks.value.push(newTask)
-        this.tasks.notify(this.tasks.value)
+        this.tasks.notify()
     }
 
     deleteTask = (taskId) => {
         this.tasks.value = this.tasks.value.filter(task => task.id !== taskId)
-        this.tasks.notify(this.tasks.value)
+        this.tasks.notify()
     }
 
     doneTask = (taskId) => {
         const task = this.tasks.value.find(task => task.id === taskId)
         task.done = !task.done
-        this.tasks.notify(this.tasks.value)
+        this.tasks.notify()
         return task
     }
 }
