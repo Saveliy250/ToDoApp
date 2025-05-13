@@ -4,7 +4,7 @@ export class FetchWrapper {
     }
 
     async get(url) {
-        const response = await fetch(`${this.baseUrl}${url}`)
+        const response = await fetch(`${this.baseUrl}/${url}`)
         if (!response.ok) {
             throw new Error(response.statusText)
         }
@@ -12,7 +12,7 @@ export class FetchWrapper {
     }
 
     async post(url, body) {
-        const response = await fetch(`${this.baseUrl}${url}`, {
+        const response = await fetch(`${this.baseUrl}/${url}`, {
             method: 'POST',
             body: JSON.stringify(body),
             headers: {
@@ -25,17 +25,18 @@ export class FetchWrapper {
         return response.json()
     }
 
-    async delete(url) {
-        const response = await fetch(`${this.baseUrl}${url}`, {
+    async delete(url, id) {
+        const response = await fetch(`${this.baseUrl}/${url}/${id}`, {
             method: 'DELETE',
         })
+
         if (!response.ok) {
             throw new Error(response.statusText)
         }
-        return response.json()
+        return response
     }
-    async patch(url, body) {
-        const response = await fetch(`${this.baseUrl}${url}`, {
+    async patch(url, body, id) {
+        const response = await fetch(`${this.baseUrl}/${url}/${id}`, {
             method: 'PATCH',
             body: JSON.stringify(body),
             headers: {
