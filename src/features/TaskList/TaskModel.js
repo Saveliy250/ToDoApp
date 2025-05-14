@@ -1,6 +1,6 @@
-import {Observable} from "../shared/Observable.js";
+import {Observable} from "../../js/shared/Observable.js";
 
-export class TasksModel {
+export class TaskModel {
     constructor(initialValue) {
         this.tasks = new Observable(initialValue);
     }
@@ -11,6 +11,12 @@ export class TasksModel {
     getTaskById = (id) => {
         return this.tasks.value.find(task => task.id === id)
     }
+
+    setTask = (task) => {
+        this.tasks.value = task;
+        this.tasks.notify()
+    }
+
     addTask = (newTask) => {
         this.tasks.value.push(newTask)
         this.tasks.notify()
