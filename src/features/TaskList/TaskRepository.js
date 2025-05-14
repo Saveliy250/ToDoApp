@@ -1,4 +1,4 @@
-import {FetchWrapper} from "../shared/FetchWrapper.js";
+import {FetchWrapper} from "../../js/shared/FetchWrapper.js";
 
 export class TaskRepository {
     endPoint = 'tasks'
